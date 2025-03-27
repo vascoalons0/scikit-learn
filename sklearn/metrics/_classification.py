@@ -1515,18 +1515,21 @@ def fbeta_score(
     0.12...
     """
 
-    _, _, f, _ = precision_recall_fscore_support(
+    from ._classification import precision_recall_fscore_support
+
+    if average != "binary":
+        pos_label = None
+
+    _, _, f1, _ = precision_recall_fscore_support(
         y_true,
         y_pred,
-        beta=beta,
         labels=labels,
         pos_label=pos_label,
         average=average,
-        warn_for=("f-score",),
         sample_weight=sample_weight,
         zero_division=zero_division,
     )
-    return f
+    return f1
 
 
 def _prf_divide(
